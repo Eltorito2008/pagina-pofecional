@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SnakeMaster - Portal de Juegos</title>
+    <title>SnakeMaster</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Variables CSS */
         :root {
             --primary: #4361ee;
             --secondary: #3a0ca3;
@@ -21,7 +20,6 @@
             --transition: all 0.3s ease;
         }
 
-        /* Reset y estilos base */
         * {
             margin: 0;
             padding: 0;
@@ -54,7 +52,7 @@
             margin: 0 auto;
         }
 
-        /* Header */
+      
         header {
             width: 100%;
             padding: 20px 0;
@@ -102,7 +100,7 @@
             color: var(--accent);
         }
 
-        /* Login Form */
+      
         .login-container {
             background-color: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
@@ -179,7 +177,7 @@
             font-weight: 500;
         }
 
-        /* Main Content */
+       
         .main-content {
             display: none;
             width: 100%;
@@ -229,7 +227,6 @@
             margin-bottom: 15px;
         }
 
-        /* Game Section */
         .game-section {
             background-color: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
@@ -282,7 +279,6 @@
             grid-template-rows: repeat(20, 1fr);
         }
 
-        /* Elementos del juego Snake */
         .snake-head {
             background: linear-gradient(135deg, var(--success), var(--primary));
             border-radius: 4px;
@@ -439,7 +435,6 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
             header {
                 flex-direction: column;
@@ -476,7 +471,7 @@
             }
         }
 
-        /* Notification */
+       
         .notification {
             position: fixed;
             top: 20px;
@@ -545,15 +540,15 @@
 
         <div class="main-content" id="mainContent">
             <section class="welcome-section">
-                <h2>Bienvenido, <span id="userName">Usuario</span>!</h2>
-                <p>Gracias por iniciar sesión en SnakeMaster. Tu próxima sesión de juego está programada para <strong id="nextSession">Jueves 15:00</strong>. Hemos enviado los detalles a tu correo electrónico.</p>
+                <h2>Bienvenido <span id="userName">Usuario</span>!</h2>
+                <p>gracias por iniciar sesion <strong id="nextSession">Jueves 15:00</strong>. Hemos enviado los detalles a tu correo electrónico.</p>
                 
                 <div class="user-info">
                     <div class="user-card">
                         <div class="user-avatar" id="userAvatar">U</div>
                         <h3>Información de Cuenta</h3>
-                        <p><strong>Email:</strong> <span id="userEmail">usuario@ejemplo.com</span></p>
-                        <p><strong>Miembro desde:</strong> <span id="memberSince">Enero 2023</span></p>
+                        <p><strong>Email:</strong> <span id="userEmail">juanijua@gmail.com</span></p>
+                        <p><strong>Miembro desde:</strong> <span id="memberSince">noviembre 2025</span></p>
                     </div>
                     
                     <div class="user-card">
@@ -581,7 +576,7 @@
                         <div class="level"><i class="fas fa-chart-line"></i> Nivel: <span id="level">1</span></div>
                     </div>
                     <div class="game-board" id="gameBoard">
-                        <!-- El tablero se generará dinámicamente con JavaScript -->
+                
                     </div>
                     <div class="controls">
                         <button class="control-btn" id="startBtn">
@@ -614,7 +609,7 @@
             <section class="api-section">
                 <h2><i class="fas fa-gamepad"></i> Juegos Populares</h2>
                 <div class="api-content" id="apiContent">
-                    <!-- Los datos de la API se cargarán aquí -->
+        
                 </div>
             </section>
         </div>
@@ -627,7 +622,7 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // Datos de usuarios válidos
+     
         const validUsers = {
             "admin": { 
                 password: "admin123", 
@@ -658,7 +653,7 @@
             }
         };
 
-        // Elementos del DOM
+       
         const loginContainer = document.getElementById('loginContainer');
         const loginForm = document.getElementById('loginForm');
         const mainContent = document.getElementById('mainContent');
@@ -672,7 +667,7 @@
         const nextSession = document.getElementById('nextSession');
         const notification = document.getElementById('notification');
 
-        // Elementos del juego
+      
         const gameBoard = document.getElementById('gameBoard');
         const scoreElement = document.getElementById('score');
         const bestScoreElement = document.getElementById('bestScore');
@@ -685,7 +680,7 @@
         const leftBtn = document.getElementById('leftBtn');
         const rightBtn = document.getElementById('rightBtn');
 
-        // Variables del juego
+        
         let score = 0;
         let bestScore = 0;
         let level = 1;
@@ -698,19 +693,19 @@
         let food = {};
         const gridSize = 20;
 
-        // Manejo del formulario de login
+     
         loginForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
-            // Verificar credenciales
+      
             if (validUsers[username] && validUsers[username].password === password) {
-                // Login exitoso
+              
                 const user = validUsers[username];
                 
-                // Mostrar información del usuario
+             
                 userName.textContent = user.name;
                 userEmail.textContent = user.email;
                 userAvatar.textContent = user.name.charAt(0).toUpperCase();
@@ -721,37 +716,36 @@
                 bestScore = user.highScore;
                 bestScoreElement.textContent = bestScore;
                 
-                // Ocultar login y mostrar contenido principal
+                
                 loginContainer.style.display = 'none';
                 mainContent.style.display = 'block';
                 
-                // Simular envío de correo
+              
                 simulateEmail(user.email, user.name);
                 
-                // Mostrar notificación
+                
                 showNotification(`Bienvenido ${user.name}! Hemos enviado los detalles de tu próxima sesión a tu correo.`, 'success');
                 
-                // Cargar datos de la API
+              
                 loadAPIData();
                 
-                // Inicializar el juego
+                
                 initializeGame();
             } else {
                 showNotification('Usuario o contraseña incorrectos. Inténtalo de nuevo.', 'error');
             }
         });
 
-        // Simular envío de correo
+ 
         function simulateEmail(email, name) {
             console.log(`Enviando correo a: ${email}`);
             console.log(`Asunto: Bienvenido a SnakeMaster, ${name}`);
             console.log(`Contenido: Hola ${name}, te damos la bienvenida a SnakeMaster. Tu próxima sesión de juego está programada para el jueves a las 15:00. ¡Prepárate para divertirte!`);
             
-            // En una implementación real, aquí se enviaría un correo real
-            // usando un servicio como EmailJS, SendGrid, etc.
+           
         }
 
-        // Mostrar notificación
+      
         function showNotification(message, type = 'success') {
             notification.textContent = message;
             notification.className = 'notification';
@@ -763,11 +757,11 @@
             }, 5000);
         }
 
-        // Cargar datos de la API (simulados)
+       
         function loadAPIData() {
             const apiContent = document.getElementById('apiContent');
             
-            // Datos simulados de una API de juegos
+        
             const games = [
                 {
                     name: "Classic Snake",
@@ -795,7 +789,7 @@
                 }
             ];
             
-            // Generar tarjetas de juegos
+           
             apiContent.innerHTML = games.map(game => `
                 <div class="api-card">
                     <img src="${game.image}" alt="${game.name}">
@@ -806,22 +800,22 @@
             `).join('');
         }
 
-        // Funciones del juego Snake
+        
         function initializeGame() {
-            // Crear el tablero de juego
+        
             createGameBoard();
             
-            // Inicializar la serpiente
+           
             snake = [
                 {x: 10, y: 10},
                 {x: 9, y: 10},
                 {x: 8, y: 10}
             ];
             
-            // Generar comida inicial
+      
             generateFood();
             
-            // Dibujar el estado inicial
+        
             drawGame();
         }
 
@@ -837,13 +831,13 @@
         }
 
         function drawGame() {
-            // Limpiar el tablero
+          
             const cells = document.querySelectorAll('.game-board > div');
             cells.forEach(cell => {
                 cell.className = '';
             });
             
-            // Dibujar la serpiente
+           
             snake.forEach((segment, index) => {
                 const cell = document.getElementById(`cell-${segment.x}-${segment.y}`);
                 if (cell) {
@@ -855,7 +849,7 @@
                 }
             });
             
-            // Dibujar la comida
+          
             const foodCell = document.getElementById(`cell-${food.x}-${food.y}`);
             if (foodCell) {
                 foodCell.classList.add('food');
@@ -877,10 +871,10 @@
         function moveSnake() {
             if (!gameActive || gamePaused) return;
             
-            // Actualizar dirección
+           
             direction = nextDirection;
             
-            // Calcular nueva cabeza
+           
             const head = {...snake[0]};
             switch(direction) {
                 case 'up': head.y--; break;
@@ -889,42 +883,42 @@
                 case 'right': head.x++; break;
             }
             
-            // Verificar colisiones con los bordes
+          
             if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
                 gameOver();
                 return;
             }
             
-            // Verificar colisiones con el cuerpo
+         
             if (snake.some(segment => segment.x === head.x && segment.y === head.y)) {
                 gameOver();
                 return;
             }
             
-            // Mover la serpiente
+      
             snake.unshift(head);
             
-            // Verificar si comió la comida
+            
             if (head.x === food.x && head.y === food.y) {
-                // Aumentar puntuación
+              
                 score += 10 * level;
                 scoreElement.textContent = score;
                 
-                // Generar nueva comida
+                
                 generateFood();
                 
-                // Aumentar nivel cada 100 puntos
+               
                 if (score % 100 === 0) {
                     level++;
                     levelElement.textContent = level;
                     showNotification(`¡Nivel ${level} alcanzado!`, 'success');
                 }
             } else {
-                // Si no comió, quitar la cola
+             
                 snake.pop();
             }
             
-            // Dibujar el juego
+           
             drawGame();
         }
 
@@ -940,20 +934,20 @@
             direction = 'right';
             nextDirection = 'right';
             
-            // Inicializar la serpiente
+       
             snake = [
                 {x: 10, y: 10},
                 {x: 9, y: 10},
                 {x: 8, y: 10}
             ];
             
-            // Generar comida
+        
             generateFood();
             
-            // Iniciar el intervalo del juego
+          
             gameInterval = setInterval(moveSnake, 200 - (level * 10));
             
-            // Cambiar estado de botones
+        
             startBtn.disabled = true;
             startBtn.innerHTML = '<i class="fas fa-play"></i> En juego';
             pauseBtn.disabled = false;
@@ -987,32 +981,30 @@
             gamePaused = false;
             clearInterval(gameInterval);
             
-            // Mostrar mensaje de fin de juego
+     
             showNotification(`¡Game Over! Tu puntuación: ${score}`, 'error');
             
-            // Actualizar puntuación máxima si es necesario
+          
             if (score > bestScore) {
                 bestScore = score;
                 bestScoreElement.textContent = bestScore;
-                
-                // Actualizar también en la interfaz de usuario
+           
                 highScoreElement.textContent = bestScore;
-                
-                // Guardar en localStorage
+        
                 const username = document.getElementById('username').value;
                 localStorage.setItem(`snakeHighScore_${username}`, bestScore);
                 
                 showNotification(`¡Nueva puntuación máxima: ${bestScore}!`, 'success');
             }
             
-            // Restablecer botones
+        
             startBtn.disabled = false;
             startBtn.innerHTML = '<i class="fas fa-play"></i> Iniciar Juego';
             pauseBtn.disabled = true;
             pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pausar';
         }
 
-        // Control con teclado
+       
         document.addEventListener('keydown', function(e) {
             if (!gameActive || gamePaused) return;
             
@@ -1036,7 +1028,7 @@
             }
         });
 
-        // Control con botones
+    
         startBtn.addEventListener('click', startGame);
         pauseBtn.addEventListener('click', pauseGame);
         resetBtn.addEventListener('click', resetGame);
@@ -1045,7 +1037,7 @@
         leftBtn.addEventListener('click', () => { if (direction !== 'right') nextDirection = 'left'; });
         rightBtn.addEventListener('click', () => { if (direction !== 'left') nextDirection = 'right'; });
 
-        // Inicializar mejor puntuación desde localStorage
+       
         window.addEventListener('load', function() {
             const username = document.getElementById('username').value;
             if (username && validUsers[username]) {
