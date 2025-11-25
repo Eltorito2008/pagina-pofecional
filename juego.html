@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Piedra, Papel o Tijeras</title>
+    <link rel="stylesheet" href="profecional.css">
+</head>
+<body>
+    <div class="seccion">
+        <h2>Piedra, Papel o Tijeras</h2>
+        
+        <div class="instrucciones">
+            <p>Elige una opción. Gana el primero en llegar a 3 puntos.</p>
+        </div>
+
+        <div class="opciones">
+            <button class="opcion" onclick="juego.jugarRonda('piedra')">Piedra</button>
+            <button class="opcion" onclick="juego.jugarRonda('papel')">Papel</button>
+            <button class="opcion" onclick="juego.jugarRonda('tijeras')">Tijeras</button>
+        </div>
+
+        <div class="resultados">
+            <div class="elecciones">
+                <div class="jugador">
+                    <h3>Tú</h3>
+                    <div id="jugador-eleccion" class="emoji-eleccion"></div>
+                    <p id="jugador-texto">-</p>
+                </div>
+                <div class="computadora">
+                    <h3>Computadora</h3>
+                    <div id="computadora-eleccion" class="emoji-eleccion"></div>
+                    <p id="computadora-texto">-</p>
+                </div>
+            </div>
+
+            <div id="mensaje-resultado" class="mensaje-resultado">
+                Elige una opción 
+            </div>
+        </div>
+
+        <div class="puntaje">
+            <div class="puntaje-item">
+                <div>Tú</div>
+                <div id="puntaje-jugador" class="puntaje-numero jugador-puntaje">0</div>
+            </div>
+            <div class="puntaje-item">
+                <div>Empates</div>
+                <div id="puntaje-empates" class="puntaje-numero empates-puntaje">0</div>
+            </div>
+            <div class="puntaje-item">
+                <div>PC</div>
+                <div id="puntaje-computadora" class="puntaje-numero computadora-puntaje">0</div>
+            </div>
+        </div>
+
+        <button class="btn-salir" onclick="juego.reiniciar()">Reiniciar Juego</button>
+        <a href="api.html" style="margin-top: 15px;">Ver API de Los Simpson</a>
+    </div>
+
+    <script>
+        class PiedraPapelTijeras {
+    constructor() {
+        this.opciones = ['piedra', 'papel', 'tijeras'];
+        this.puntaje = {
+            jugador: 0,
+            computadora: 0,
+            empates: 0
+        };
+        
+       
+        this.emojiMap = {
+            'piedra': 'piedra',
+            'papel': 'papel',
+            'tijeras': 'tijera'
+        };
+    }
+ 
+
+            constructor() {
+                this.opciones = ['piedra', 'papel', 'tijeras'];
+                this.puntaje = {
+                    jugador: 0,
+                    computadora: 0,
+                    empates: 0
+                };
+            }
+
+            obtenerEleccionComputadora() {
+                const indice = Math.floor(Math.random() * 3);
+                return this.opciones[indice];
+            }
+
+            determinarGanador(eleccionJugador, eleccionComputadora) {
+                if (eleccionJugador === eleccionComputadora) {
+                    return 'empate';
+                }
+
+                if (
+                    (eleccionJugador === 'piedra' && eleccionComputadora === 'tijeras') ||
+                    (eleccionJugador === 'papel' && eleccionComputadora === 'piedra') ||
+                    (eleccionJugador === 'tijeras' && eleccionComputadora === 'papel')
+                ) {
+                    return 'jugador';
+                }
+
+                return 'computadora';
+            }
+
+            jugarRonda(eleccionJugador) {
+                const eleccionComputadora = this.obtenerEleccionComputadora();
+                const ganador = this.determinarGanador(eleccionJugador, eleccionComputadora);
+
+              
+                document.getElementById('jugador-eleccion').textContent = this.emojiMap[eleccionJugador];
+                document.getElementById('computadora-eleccion').textContent = this.emojiMap[eleccionComputadora];
+                document.getElementById('jugador-texto').textContent = eleccionJugador;
+                document.getElementById('computadora-texto').textContent = eleccionComputadora;
+
+                
+                const mensajeElement = document.getElementById('mensaje-resultado');
+                mensajeElement.className = 'mensaje-resultado ';
+
+                switch (ganador) {
+                    case 'jugador':
+                        this.puntaje.jugador++;
+                        mensajeElement.textContent = 'ganaste la ronda';
+                        mensajeElement.className += 'guun';
+                        break;
+                    case 'computadora':
+                        this.puntaje.computadora++;
+                        mensajeElement.textContent = 'La compu ganó ';
+                        mensajeElement.className += 'pajero';
+                        break;
+                    default:
+                        this.puntaje.empates++;
+                        mensajeElement.textContent = 'Empate';
+                        mensajeElement.className += 'empate';
+                }
+
+                this.actualizarPuntaje();
+
+                if (this.puntaje.jugador >= 3 || this.puntaje.computadora >= 3) {
+                    this.mostrarGanadorFinal();
+                }
+            }
+            
+            actualizarPuntaje() {
+                document.getElementById('puntaje-jugador').textContent = this.puntaje.jugador;
+                document.getElementById('puntaje-computadora').textContent = this.puntaje.computadora;
+                document.getElementById('puntaje-empates').textContent = this.puntaje.empates;
+            }
+
+            mostrarGanadorFinal() {
+                const mensajeElement = document.getElementById('mensaje-resultado');
+                if (this.puntaje.jugador > this.puntaje.computadora) {
+                    mensajeElement.textContent = 'ganaste';
+                    mensajeElement.className = 'mensaje-resultado ganador mensaje-final';
+                } else {
+                    mensajeElement.textContent = 'La computadora ganó el juego. Mejor suerte la próxima vez 💻';
+                    mensajeElement.className = 'mensaje-resultado perdedor mensaje-final';
+                }
+            }
+
+            reiniciar() {
+                this.puntaje = { jugador: 0, computadora: 0, empates: 0 };
+                this.actualizarPuntaje();
+                document.getElementById('jugador-eleccion').textContent = '';
+                document.getElementById('computadora-eleccion').textContent = '';
+                document.getElementById('jugador-texto').textContent = '-';
+                document.getElementById('computadora-texto').textContent = '-';
+                document.getElementById('mensaje-resultado').textContent = 'elige una opción para empezar';
+                document.getElementById('mensaje-resultado').className = 'mensaje-resultado';
+            }
+        }
+
+    
+        const juego = new PiedraPapelTijeras();
+    </script>
+</body>
+</html>

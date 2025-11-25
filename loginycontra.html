@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro</title>
+<link rel="stylesheet" href="profecional.css">
+</head>
+<body>
+
+  <div class="seccion">
+    <h2>logearse</h2>
+
+    <input id="nombre" placeholder="Nombre ">
+    <input id="usuario" placeholder="Usuario">
+    <input id="contraseña" type="password" placeholder="Contraseña">
+
+    <button onclick="registrar()">Registrarse</button>
+
+    <p id="mensaje"></p>
+
+    <a href="juego.html">Jugar ahora</a>
+  </div>
+
+  <script>
+    function registrar() {
+      const nombre = document.getElementById("nombre").value;
+      const usuario = document.getElementById("usuario").value;
+      const contraseña = document.getElementById("contraseña").value;
+
+      if (!nombre || !usuario || !contraseña) {
+        mensaje.textContent = "Completa todos los campos)";
+        return;
+      }
+
+      let datos = { nombre, usuario, contraseña };
+      localStorage.setItem("usuarioRegistrado", JSON.stringify(datos));
+
+      mensaje.textContent = "Registrado";
+      setTimeout(() => {
+        window.location.href = "registro.html";
+      }, 800);
+    }
+  </script>
+
+</body>
+</html>

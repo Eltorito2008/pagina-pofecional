@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API de Los Simpson</title>
+    <link rel="stylesheet" href="profecional.css">
+</head>
+<body>
+    <div class="seccion">
+        <h2>Personaje de Los Simpson</h2>
+        
+        <div class="card" id="character-card">
+            <img id="character-image" src="" alt="Personaje de Los Simpson" style="max-width: 300px; border-radius: 10px; margin: 10px 0;">
+            <h3 id="character-name">Cargando...</h3>
+            <p id="character-quote"></p>
+        </div>
+
+        <button onclick="cargarPersonaje()" style="margin: 15px 0;">Cargar otro personaje</button>
+        
+        <a href="juego.html">Jugar a Piedra, Papel o Tijeras</a>
+    </div>
+
+    <script>
+        function cargarPersonaje() {
+    
+            fetch("https://simpsons-quotes-api.herokuapp.com/quotes")
+                .then(res => res.json())
+                .then(data => {
+                    const character = data[0];
+                    document.getElementById('character-image').src = character.image;
+                    document.getElementById('character-name').textContent = character.character;
+                    document.getElementById('character-quote').textContent = `"${character.quote}"`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('character-name').textContent = 'Error cargando personaje';
+                });
+        }
+
+   
+        cargarPersonaje();
+    </script>
+</body>
+</html>
