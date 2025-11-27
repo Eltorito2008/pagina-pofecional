@@ -6,12 +6,13 @@
     <title>Snake Game</title>
     <link rel="stylesheet" href="profecional.css">
     <style>
- 
+       
         .snake-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 20px 0;
+            transition: all 0.3s ease;
         }
         
         .snake-game {
@@ -22,6 +23,19 @@
             border-radius: 8px;
             background-color: #f8f9fa;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .snake-game.fullscreen {
+            width: 95vw;
+            height: 80vh;
+            max-width: 800px;
+            max-height: 800px;
+        }
+        
+        .snake-game.medium {
+            width: 500px;
+            height: 500px;
         }
         
         .snake-grid {
@@ -33,8 +47,6 @@
         }
         
         .snake-cell {
-            width: 15px;
-            height: 15px;
             border: 1px solid rgba(102, 126, 234, 0.1);
         }
         
@@ -143,6 +155,45 @@
         .nivel-snake {
             color: #ffc107;
         }
+        
+        .screen-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .screen-btn {
+            padding: 8px 15px;
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .screen-btn:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+        
+        .screen-btn.active {
+            background-color: #667eea;
+        }
+        
+        .fullscreen-notice {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -150,7 +201,13 @@
         <h2>Snake Game</h2>
         
         <div class="instrucciones">
-            <p>usa las flechas </p>
+            <p>Usa las flechas</p>
+        </div>
+
+        <div class="screen-controls">
+            <button class="screen-btn" id="btn-small" onclick="snakeGame.setScreenSize('small')">Pequeño</button>
+            <button class="screen-btn active" id="btn-medium" onclick="snakeGame.setScreenSize('medium')">Mediano</button>
+            <button class="screen-btn" id="btn-fullscreen" onclick="snakeGame.setScreenSize('fullscreen')">Pantalla Completa</button>
         </div>
 
         <div class="snake-container">
@@ -163,14 +220,18 @@
                     <div>Nivel</div>
                     <div id="nivel-snake" class="snake-stat-value nivel-snake">1</div>
                 </div>
+                <div class="snake-stat">
+                    <div>Longitud</div>
+                    <div id="longitud-snake" class="snake-stat-value">1</div>
+                </div>
             </div>
             
-            <div class="snake-game">
+            <div class="snake-game" id="snake-game">
                 <div class="snake-grid" id="snake-grid"></div>
                 <div id="game-over" class="game-over" style="display: none;">
                     <h3>¡Game Over!</h3>
                     <p id="final-score">Puntaje: 0</p>
-                    <button class="control-btn" onclick="snakeGame.reiniciar()" style="margin-top: 15px;">Jugar </button>
+                    <button class="control-btn" onclick="snakeGame.reiniciar()" style="margin-top: 15px;">Jugar de nuevo</button>
                 </div>
             </div>
             
@@ -186,8 +247,12 @@
             </div>
         </div>
 
+        <div class="fullscreen-notice" id="fullscreen-notice">
+            Presiona ESC para salir de pantalla completa
+        </div>
+
         <button class="btn-salir" onclick="snakeGame.reiniciar()">Reiniciar </button>
-        <a href="main.html" style="margin-top: 15px;">Ver API </a>
+        <a href="main.html" style="margin-top: 15px;">Ver api</a>
     </div>
 
     <script>
@@ -204,11 +269,14 @@
                 this.gameOver = false;
                 this.gameLoop = null;
                 this.speed = 150; // ms
+                this.screenSize = 'medium';
                 
                 this.grid = document.getElementById('snake-grid');
+                this.gameContainer = document.getElementById('snake-game');
                 this.initGrid();
                 this.generateFood();
                 this.updateDisplay();
+                this.setupEventListeners();
             }
             
             initGrid() {
@@ -224,12 +292,12 @@
             }
             
             updateDisplay() {
-         
+       
                 document.querySelectorAll('.snake-cell').forEach(cell => {
                     cell.className = 'snake-cell';
                 });
                 
-          
+              
                 this.snake.forEach((segment, index) => {
                     const cell = document.getElementById(`cell-${segment.x}-${segment.y}`);
                     if (cell) {
@@ -237,14 +305,16 @@
                     }
                 });
                 
-        
+            
                 const foodCell = document.getElementById(`cell-${this.food.x}-${this.food.y}`);
                 if (foodCell) {
                     foodCell.className = 'snake-cell snake-food';
                 }
                 
+            
                 document.getElementById('puntaje-snake').textContent = this.score;
                 document.getElementById('nivel-snake').textContent = this.level;
+                document.getElementById('longitud-snake').textContent = this.snake.length;
             }
             
             generateFood() {
@@ -260,7 +330,7 @@
             }
             
             cambiarDireccion(newDirection) {
-          
+               
                 const opposites = {
                     'arriba': 'abajo',
                     'abajo': 'arriba',
@@ -278,7 +348,7 @@
                 
                 this.direction = this.nextDirection;
                 
-  
+            
                 const head = {...this.snake[0]};
                 
                 switch (this.direction) {
@@ -296,25 +366,26 @@
                         break;
                 }
                 
-          
+           
                 if (head.x < 0 || head.x >= this.gridSize || head.y < 0 || head.y >= this.gridSize) {
                     this.finDelJuego();
                     return;
                 }
                 
-    
+              
                 if (this.snake.some(segment => segment.x === head.x && segment.y === head.y)) {
                     this.finDelJuego();
                     return;
                 }
                 
-           
+            
                 this.snake.unshift(head);
                 
-          
+               
                 if (head.x === this.food.x && head.y === this.food.y) {
                     this.score += 10 * this.level;
                     
+                  
                     this.level = Math.floor(this.score / 50) + 1;
                     
                  
@@ -322,18 +393,68 @@
                     
                     this.generateFood();
                 } else {
-              
+                   
                     this.snake.pop();
                 }
                 
                 this.updateDisplay();
             }
             
-            iniciar() {
-                if (this.gameLoop) clearInterval(this.gameLoop);
-                this.gameLoop = setInterval(() => this.mover(), this.speed);
+            setScreenSize(size) {
+                this.screenSize = size;
                 
               
+                document.querySelectorAll('.screen-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(`btn-${size}`).classList.add('active');
+                
+    
+                this.gameContainer.classList.remove('small', 'medium', 'fullscreen');
+                
+                if (size === 'fullscreen') {
+                    this.enterFullscreen();
+                } else {
+                    this.exitFullscreen();
+                    this.gameContainer.classList.add(size);
+                }
+            }
+            
+            enterFullscreen() {
+                const elem = this.gameContainer;
+                
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+                
+                this.gameContainer.classList.add('fullscreen');
+                
+  
+                const notice = document.getElementById('fullscreen-notice');
+                notice.style.display = 'block';
+                setTimeout(() => {
+                    notice.style.display = 'none';
+                }, 3000);
+            }
+            
+            exitFullscreen() {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+                
+                document.getElementById('fullscreen-notice').style.display = 'none';
+            }
+            
+            setupEventListeners() {
+          
                 document.addEventListener('keydown', (e) => {
                     switch (e.key) {
                         case 'ArrowUp':
@@ -348,8 +469,25 @@
                         case 'ArrowRight':
                             this.cambiarDireccion('derecha');
                             break;
+                        case 'Escape':
+                            if (this.screenSize === 'fullscreen') {
+                                this.setScreenSize('medium');
+                            }
+                            break;
                     }
                 });
+                
+           
+                document.addEventListener('fullscreenchange', () => {
+                    if (!document.fullscreenElement && this.screenSize === 'fullscreen') {
+                        this.setScreenSize('medium');
+                    }
+                });
+            }
+            
+            iniciar() {
+                if (this.gameLoop) clearInterval(this.gameLoop);
+                this.gameLoop = setInterval(() => this.mover(), this.speed);
             }
             
             finDelJuego() {
@@ -376,7 +514,7 @@
             }
         }
         
-       
+     
         const snakeGame = new SnakeGame();
         snakeGame.iniciar();
     </script>
