@@ -2,22 +2,22 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Registro</title>
+  <title>Iniciar Sesión</title>
   <link rel="stylesheet" href="profecional.css">
 </head>
 <body>
   <div class="seccion">
-    <h2>Registrarse</h2>
+    <h2>Iniciar Sesión</h2>
 
     <input id="nombre" placeholder="Nombre">
     <input id="usuario" placeholder="Usuario">
     <input id="contraseña" type="password" placeholder="Contraseña">
 
-    <button onclick="registrar()">Registrarme</button>
+    <button onclick="registrar()">Iniciar Sesión</button>
 
     <p id="mensaje"></p>
 
-    <a href="login.html">¿Ya tienes cuenta? Inicia sesión</a>
+    <a href="registro.html">¿No tienes cuenta? Regístrate</a>
     <a href="juego.html">Jugar ahora</a>
     <a href="index.html">Volver al inicio</a>
   </div>
@@ -37,9 +37,9 @@
       let datos = { nombre, usuario, contraseña };
       localStorage.setItem("usuarioRegistrado", JSON.stringify(datos));
 
-      mensaje.textContent = "¡Registrado correctamente!";
+      mensaje.textContent = "¡Sesión iniciada correctamente!";
       setTimeout(() => {
-        window.location.href = "api.html";
+        window.location.href = "juego.html";
       }, 800);
     }
   </script>
