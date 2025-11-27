@@ -6,7 +6,7 @@
     <title>Snake Game</title>
     <link rel="stylesheet" href="profecional.css">
     <style>
-        /* Estilos adicionales específicos para el juego Snake */
+ 
         .snake-container {
             display: flex;
             flex-direction: column;
@@ -150,7 +150,7 @@
         <h2>Snake Game</h2>
         
         <div class="instrucciones">
-            <p>Usa las flechas del teclado o los botones para mover la serpiente. Come la comida roja para crecer y ganar puntos.</p>
+            <p>usa las flechas </p>
         </div>
 
         <div class="snake-container">
@@ -170,7 +170,7 @@
                 <div id="game-over" class="game-over" style="display: none;">
                     <h3>¡Game Over!</h3>
                     <p id="final-score">Puntaje: 0</p>
-                    <button class="control-btn" onclick="snakeGame.reiniciar()" style="margin-top: 15px;">Jugar de nuevo</button>
+                    <button class="control-btn" onclick="snakeGame.reiniciar()" style="margin-top: 15px;">Jugar </button>
                 </div>
             </div>
             
@@ -186,8 +186,8 @@
             </div>
         </div>
 
-        <button class="btn-salir" onclick="snakeGame.reiniciar()">Reiniciar Juego</button>
-        <a href="main.html" style="margin-top: 15px;">Ver API de Los Simpson</a>
+        <button class="btn-salir" onclick="snakeGame.reiniciar()">Reiniciar </button>
+        <a href="main.html" style="margin-top: 15px;">Ver API </a>
     </div>
 
     <script>
@@ -224,12 +224,12 @@
             }
             
             updateDisplay() {
-                // Limpiar el grid
+         
                 document.querySelectorAll('.snake-cell').forEach(cell => {
                     cell.className = 'snake-cell';
                 });
                 
-                // Dibujar la serpiente
+          
                 this.snake.forEach((segment, index) => {
                     const cell = document.getElementById(`cell-${segment.x}-${segment.y}`);
                     if (cell) {
@@ -237,13 +237,12 @@
                     }
                 });
                 
-                // Dibujar la comida
+        
                 const foodCell = document.getElementById(`cell-${this.food.x}-${this.food.y}`);
                 if (foodCell) {
                     foodCell.className = 'snake-cell snake-food';
                 }
                 
-                // Actualizar puntaje y nivel
                 document.getElementById('puntaje-snake').textContent = this.score;
                 document.getElementById('nivel-snake').textContent = this.level;
             }
@@ -261,7 +260,7 @@
             }
             
             cambiarDireccion(newDirection) {
-                // Evitar que la serpiente se mueva en dirección opuesta
+          
                 const opposites = {
                     'arriba': 'abajo',
                     'abajo': 'arriba',
@@ -279,7 +278,7 @@
                 
                 this.direction = this.nextDirection;
                 
-                // Calcular nueva cabeza
+  
                 const head = {...this.snake[0]};
                 
                 switch (this.direction) {
@@ -297,34 +296,33 @@
                         break;
                 }
                 
-                // Verificar colisiones con los bordes
+          
                 if (head.x < 0 || head.x >= this.gridSize || head.y < 0 || head.y >= this.gridSize) {
                     this.finDelJuego();
                     return;
                 }
                 
-                // Verificar colisiones con el cuerpo
+    
                 if (this.snake.some(segment => segment.x === head.x && segment.y === head.y)) {
                     this.finDelJuego();
                     return;
                 }
                 
-                // Agregar nueva cabeza
+           
                 this.snake.unshift(head);
                 
-                // Verificar si comió la comida
+          
                 if (head.x === this.food.x && head.y === this.food.y) {
                     this.score += 10 * this.level;
                     
-                    // Aumentar nivel cada 50 puntos
                     this.level = Math.floor(this.score / 50) + 1;
                     
-                    // Aumentar velocidad cada nivel
+                 
                     this.speed = Math.max(50, 150 - (this.level - 1) * 10);
                     
                     this.generateFood();
                 } else {
-                    // Remover cola si no comió
+              
                     this.snake.pop();
                 }
                 
@@ -335,7 +333,7 @@
                 if (this.gameLoop) clearInterval(this.gameLoop);
                 this.gameLoop = setInterval(() => this.mover(), this.speed);
                 
-                // Agregar controles de teclado
+              
                 document.addEventListener('keydown', (e) => {
                     switch (e.key) {
                         case 'ArrowUp':
@@ -378,7 +376,7 @@
             }
         }
         
-        // Inicializar el juego cuando se carga la página
+       
         const snakeGame = new SnakeGame();
         snakeGame.iniciar();
     </script>

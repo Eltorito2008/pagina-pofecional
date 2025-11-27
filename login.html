@@ -17,9 +17,9 @@
 
     <p id="mensaje"></p>
 
-    <a href="registro.html">¿No tienes cuenta? Regístrate</a>
-    <a href="juego.html">Jugar ahora</a>
-    <a href="index.html">Volver al inicio</a>
+    <a href="registro.html">Regístrate</a>
+    <a href="juego.html">Jugar </a>
+    <a href="index.html">Volver</a>
   </div>
 
   <script>
@@ -30,14 +30,14 @@
       const mensaje = document.getElementById("mensaje");
 
       if (!nombre || !usuario || !contraseña) {
-        mensaje.textContent = "Completa todos los campos";
+        mensaje.textContent = "Completar campos";
         return;
       }
 
       let datos = { nombre, usuario, contraseña };
       localStorage.setItem("usuarioRegistrado", JSON.stringify(datos));
 
-      mensaje.textContent = "¡Sesión iniciada correctamente!";
+      mensaje.textContent = "Sesión iniciada correctamente";
       setTimeout(() => {
         window.location.href = "juego.html";
       }, 800);

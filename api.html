@@ -12,13 +12,13 @@
         
         <div class="card" id="character-card">
             <img id="character-image" src="" alt="Personaje de Los Simpson" style="max-width: 300px; border-radius: 10px; margin: 10px 0;">
-            <h3 id="character-name">Cargando...</h3>
+            <h3 id="character-name">Cargando</h3>
             <p id="character-quote"></p>
         </div>
 
         <button onclick="cargarPersonaje()" style="margin: 15px 0;">Cargar otro personaje</button>
         
-        <!-- Corregir enlaces -->
+       
         <a href="juego.html">Jugar a Snake</a>
         <a href="index.html">Volver al inicio</a>
     </div>
@@ -35,7 +35,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    document.getElementById('character-name').textContent = 'Error cargando personaje';
+                    document.getElementById('character-name').textContent = 'cargando personaje';
                 });
         }
 
